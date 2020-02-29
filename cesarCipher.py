@@ -47,17 +47,55 @@ wordsCounted.foreach(debugPrint)
 # Get count of char occurrences
 chars = lines.flatMap(lambda string: list(string))
 charCount = chars.count()
-charCounted = (
+charsCounted = (
     chars.map(lambda char: (char.upper(), 1))
     .reduceByKey(add)
     .map(lambda char: (char[0], char[1]))
 )
-charCounted.foreach(debugPrint)
+charsCounted.foreach(debugPrint)
+
+expectedFrequencies = {
+    "E": 12.02,
+    "T": 9.10,
+    "A": 8.12,
+    "O": 7.68,
+    "I": 7.31,
+    "N": 6.95,
+    "S": 6.28,
+    "R": 6.02,
+    "H": 5.92,
+    "D": 4.32,
+    "L": 3.98,
+    "U": 2.88,
+    "C": 2.71,
+    "M": 2.61,
+    "F": 2.30,
+    "Y": 2.11,
+    "W": 2.09,
+    "G": 2.03,
+    "P": 1.82,
+    "B": 1.49,
+    "V": 1.11,
+    "K": 0.69,
+    "X": 0.17,
+    "Q": 0.11,
+    "J": 0.10,
+    "Z": 0.07,
+}
+
+# Get Frequencies of chars in file
+charsFreq = charsCounted.filter(lambda x: x[0].isalpha()).map(
+    lambda x: (x[0], x[1] / charCount * 100)
+)
+charsFreq.foreach(
+    lambda x: print(f"Cipher Char={x[0]} Freq={x[1]} vs {expectedFrequencies[x[0]]}")
+)
 
 # Sort by most frequent alpha chars
 frequentAlphaChars = (
-    charCounted.filter(lambda x: x[0].isalpha())
-    .sortBy(lambda x: x[1], ascending=False)
+    charsCounted.filter(lambda x: x[0].isalpha()).sortBy(
+        lambda x: x[1], ascending=False
+    )
     # Performance Increase: Limit list by top X chars. This would limit O(n*m) complexity
     # Needs balancing because it skip weird edge case files?
     # .take(4)

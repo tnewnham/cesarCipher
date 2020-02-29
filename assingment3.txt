@@ -1,0 +1,35 @@
+For this midterm you will be performing an analysis on a document that has been converted using a Caesar Cypher.
+
+To do this you will do the following:
+
+Word Count of the document
+Character Count of the document
+Comparison to the expected frequencies of characters in the English Language
+Use a natural language processing library to compare samples of the words within your document to see if they are valid english words
+Find the correct decryption of the document and save the output file.
+Please write a report illustrating your experiments. You need to explain your basic idea about how to design the computing algorithm. 
+You may add comments to the source code such that the source code can be read and understood by the graders.
+
+In the report, you should include the answers to the following questions.
+
+1) Explanation of the source code:
+
+What are the functions of your lambda functions?
+Which kind of intermediate results are generated?
+2) Experimental Results
+
+Screenshots of the key steps. For example, the screenshot for the outputs in the terminal when you run the command.
+It will demonstrate that your program has no bug.
+2.2) Explain your results. Does your implementation give the exact Caesar Cypher values?
+
+Submission Materials:
+
+a) Your report
+
+b) Source code (link to .py/.scala file in GitHub or BitBucket)
+
+c) The outputs in the terminal (Intermediate results)
+
+d) The output file of your program (Decrypted document values using the .saveAsTextFile command )
+
+e) The name of the source each file came from
