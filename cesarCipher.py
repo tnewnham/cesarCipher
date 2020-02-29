@@ -18,6 +18,10 @@ from spellchecker import SpellChecker
 def debugPrint(x):
     print(x)
 
+def debugTopPrint(x, y):
+    collection = x.take(y)
+    for x in collection:
+        print(x)
 
 def strip(lines):
     return "".join(char for char in lines if char.isalnum()).lower()
@@ -27,9 +31,11 @@ conf = SparkConf().setMaster("local").setAppName("cesarCipher")
 sc = SparkContext(conf=conf)
 
 
-textFile = sc.textFile("./Encrypted-1.txt")
-# textFile = sc.textFIle("./Encrypted-2.txt")
-# textFile = sc.textFIle("./Encrypted-3.txt")
+encryptedFileName = "./Encrypted-1.txt"
+decryptedFileName = "./Decrypted-1.txt"
+# encryptedFileName = "./Encrypted-2.txt"
+# encryptedFileName = "./Encrypted-3.txt"
+textFile = sc.textFile(encryptedFileName)
 
 lines = textFile.map(lambda line: str(line))
 lines.persist()
@@ -42,7 +48,8 @@ wordCount = words.count()
 # Get count of distinct word occurrences
 # Also strip words to the uppercase alphanumeric representations
 wordsCounted = words.map(lambda word: (strip(word), 1)).reduceByKey(add)
-wordsCounted.foreach(debugPrint)
+print("wordsCounted:")
+debugTopPrint(wordsCounted, 10)
 
 # Get count of char occurrences
 chars = lines.flatMap(lambda string: list(string))
@@ -52,7 +59,8 @@ charsCounted = (
     .reduceByKey(add)
     .map(lambda char: (char[0], char[1]))
 )
-charsCounted.foreach(debugPrint)
+print("charsCounted:")
+debugTopPrint(charsCounted, 10)
 
 expectedFrequencies = {
     "E": 12.02,
@@ -100,7 +108,8 @@ frequentAlphaChars = (
     # Needs balancing because it skip weird edge case files?
     # .take(4)
 )
-frequentAlphaChars.foreach(debugPrint)
+print("frequentAlphaChars:")
+debugTopPrint(frequentAlphaChars, 5)
 
 # List of common english characters
 # By adding more letters you increase search time O(n*m)
@@ -193,7 +202,8 @@ List of common chars
 frequentCharShifts = frequentAlphaChars.map(
     lambda x: (x[0], mapCommonCharShift(x[0]))
 ).flatMapValues(lambda x: x)
-frequentCharShifts.foreach(debugPrint)
+print("frequentCharShifts:")
+debugTopPrint(frequentCharShifts, 5)
 
 # ROT13 Decrypt algorithim
 def decrypt(cipher, shift):
@@ -216,11 +226,12 @@ def mapDecryptSampleWords(shift):
 
 
 # Create map of ROT13 shift by decrypted sample word
-decryptedWords = frequentCharShifts.map(lambda x: (x[1], mapDecryptSampleWords(x[1])))
-decryptedWords.foreach(debugPrint)
+decryptedWords = frequentCharShifts.map(lambda x: (x[1], mapDecryptSampleWords(x[1]))).flatMapValues(lambda x: x)
+print("decryptedWords:")
+debugTopPrint(decryptedWords, 5)
 
+# Init natural language processor
 spell = SpellChecker()
-
 
 # Check decrypted word is known
 def isInDictionary(word):
@@ -228,10 +239,11 @@ def isInDictionary(word):
 
 
 # Create map of true/false known decrypted words
-shiftByIsInDictionary = decryptedWords.flatMapValues(lambda x: x).mapValues(
+shiftByIsInDictionary = decryptedWords.mapValues(
     lambda x: isInDictionary(x)
 )
-shiftByIsInDictionary.foreach(debugPrint)
+print("shiftByIsInDictionary:")
+debugTopPrint(shiftByIsInDictionary, 20)
 
 # Count how many known words in each ROT13 shift
 countOfShiftByIsInDictionary = (
@@ -240,11 +252,20 @@ countOfShiftByIsInDictionary = (
     .reduceByKey(add)
     .sortBy(lambda x: x[1], ascending=False)
 )
-countOfShiftByIsInDictionary.foreach(debugPrint)
+print("countOfShiftByIsInDictionary:")
+debugTopPrint(countOfShiftByIsInDictionary, 20)
 
 mostFrequentShift = countOfShiftByIsInDictionary.first()
 print(f"shift={mostFrequentShift[0]}")
 
 # Dechipher every line in original cipher
-decipher = lines.map(lambda l: decrypt(l, mostFrequentShift[0])).collect()
-print(decipher)
+decipher = lines.map(lambda l: decrypt(l, mostFrequentShift[0]))
+print("decipher:")
+debugTopPrint(decipher, 20)
+
+# Throws odd exception. Might have conflict with dropbox or OneDrive?
+# decipher.saveAsTextFile(decryptedFileName)
+# Instead manually collect and print :'(
+with open(decryptedFileName, "w") as text_file:
+    for line in decipher.collect():
+        print(line, file=text_file)
