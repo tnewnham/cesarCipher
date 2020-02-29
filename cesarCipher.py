@@ -3,6 +3,18 @@ from collections import Counter
 from operator import add
 from spellchecker import SpellChecker
 
+# Read all the lines
+# Count the chars and words
+# Count the most frequent chars
+# FrequentChars * Common English Chars
+# Determing ROT13 shift of each FrequentChar * CommonChar
+# Get Random Sample of words
+# Decrypt random sample by each ROT13 shift
+# Get Known/Unknown (True/False) word count from each ROT13 shift
+# Get ROT13 shift with most correct (Known/True) words
+# Decrypt entire file with that ROT13 shift
+
+
 def debugPrint(x):
     print(x)
 
@@ -10,16 +22,14 @@ def debugPrint(x):
 def strip(lines):
     return "".join(char for char in lines if char.isalnum()).lower()
 
+
 conf = SparkConf().setMaster("local").setAppName("cesarCipher")
 sc = SparkContext(conf=conf)
 
-# textFile = sc.textFile("C:/Users/tnewn/OneDrive/Desktop/BigDataProgramming/(1) The Hunger Games.txt")
-# textFile = sc.textFile("C:/Users/tnewn/OneDrive/Desktop/BigDataProgramming/wordCountText.txt")
-textFile = sc.textFile(
-    "./Encrypted-1.txt"
-)
-# textFile = sc.textFIle("C:/Users/tnewn/OneDrive/Desktop/BigDataProgramming/Encrypted-2.txt")
-# textFile = sc.textFIle("C:/Users/tnewn/OneDrive/Desktop/BigDataProgramming/Encrypted-3.txt")
+
+textFile = sc.textFile("./Encrypted-1.txt")
+# textFile = sc.textFIle("./Encrypted-2.txt")
+# textFile = sc.textFIle("./Encrypted-3.txt")
 
 lines = textFile.map(lambda line: str(line))
 lines.persist()
@@ -45,8 +55,12 @@ charCounted = (
 charCounted.foreach(debugPrint)
 
 # Sort by most frequent alpha chars
-frequentAlphaChars = charCounted.filter(lambda x: x[0].isalpha()).sortBy(
-    lambda x: x[1], ascending=False
+frequentAlphaChars = (
+    charCounted.filter(lambda x: x[0].isalpha())
+    .sortBy(lambda x: x[1], ascending=False)
+    # Performance Increase: Limit list by top X chars. This would limit O(n*m) complexity
+    # Needs balancing because it skip weird edge case files?
+    # .take(4)
 )
 frequentAlphaChars.foreach(debugPrint)
 
@@ -119,6 +133,7 @@ def mapCommonCharShift(encryptedChar):
         commonChars,
     )
 
+
 # Map each frequent char to a list of it's ROT13 shift from english common Chars
 """
 O(n*length(commonChars))
@@ -153,12 +168,14 @@ def decrypt(cipher, shift):
             decipher += char
     return decipher
 
+
 # Get a 30% sample of words from the document
 sampleWords = wordsCounted.sample(False, 0.3, 81).map(lambda x: x[0]).collect()
 
 # Decrypt each sample word by the ROT13 shift
 def mapDecryptSampleWords(shift):
     return map(lambda sampleWord: decrypt(sampleWord, shift), sampleWords)
+
 
 # Create map of ROT13 shift by decrypted sample word
 decryptedWords = frequentCharShifts.map(lambda x: (x[1], mapDecryptSampleWords(x[1])))
@@ -171,13 +188,14 @@ spell = SpellChecker()
 def isInDictionary(word):
     return len(spell.known([word])) > 0
 
+
 # Create map of true/false known decrypted words
 shiftByIsInDictionary = decryptedWords.flatMapValues(lambda x: x).mapValues(
     lambda x: isInDictionary(x)
 )
 shiftByIsInDictionary.foreach(debugPrint)
 
-# Count how many known words in each ROT13 shift 
+# Count how many known words in each ROT13 shift
 countOfShiftByIsInDictionary = (
     shiftByIsInDictionary.filter(lambda x: x[1] == True)
     .map(lambda x: (x[0], 1))
@@ -192,10 +210,3 @@ print(f"shift={mostFrequentShift[0]}")
 # Dechipher every line in original cipher
 decipher = lines.map(lambda l: decrypt(l, mostFrequentShift[0])).collect()
 print(decipher)
-
-# check for most frequent letter
-# take a sample of words (rdd and rdd function)
-# sample (rdd function) of words rdd
-# shift every character in words by the difference between most common charater and e
-# use some natural language procession library
-# if majority of words return in english language library
