@@ -1,0 +1,130 @@
+> & C:/Python37/python.exe cesarCipher.py
+wordsCounted:
+('', 36478)
+('otwifs', 13)
+('tx', 3)
+('n', 51)
+('itsy', 13)
+('pstb', 7)
+('xmj', 12)
+('btzqisy', 2)
+('yjqq', 2)
+('rj', 14)
+charsCounted:
+(' ', 39393)
+('O', 58)
+('T', 1482)
+('W', 989)
+('I', 793)
+('F', 1732)
+('S', 1358)
+('(', 86)
+('.', 928)
+('X', 1628)
+Cipher Char=O Freq=0.09550941097040855 vs 7.68
+Cipher Char=T Freq=2.440430121692163 vs 9.1
+Cipher Char=W Freq=1.6286001284436906 vs 2.09
+Cipher Char=I Freq=1.3058441879229996 vs 7.31
+Cipher Char=F Freq=2.852108617254269 vs 2.3
+Cipher Char=S Freq=2.236237587893359 vs 6.28
+Cipher Char=X Freq=2.680850363100433 vs 0.17
+Cipher Char=N Freq=2.2494112997513462 vs 6.95
+Cipher Char=Y Freq=2.8422283333607785 vs 2.11
+Cipher Char=P Freq=0.5335353302484891 vs 1.82
+Cipher Char=B Freq=0.559882753964464 vs 1.49
+Cipher Char=M Freq=1.4211141666803893 vs 2.61
+Cipher Char=J Freq=2.9920793057453854 vs 0.1
+Cipher Char=Z Freq=0.8299438470532053 vs 0.07
+Cipher Char=Q Freq=1.3470120374792103 vs 0.11
+Cipher Char=R Freq=0.6685658767928598 vs 6.02
+Cipher Char=G Freq=0.7344344360827968 vs 2.03
+Cipher Char=K Freq=0.4874273387455333 vs 0.69
+Cipher Char=U Freq=0.46437334299405536 vs 2.88
+Cipher Char=H Freq=0.9946152452780476 vs 5.92
+Cipher Char=D Freq=1.1559932155383932 vs 4.32
+Cipher Char=A Freq=0.3309895104319331 vs 8.12
+Cipher Char=C Freq=0.06422184530768851 vs 2.71
+Cipher Char=V Freq=0.011526997875738963 vs 1.11
+Cipher Char=L Freq=1.007788957136035 vs 3.98
+Cipher Char=E Freq=0.032934279644968464 vs 12.02
+frequentAlphaChars:
+('J', 1817)
+('F', 1732)
+('Y', 1726)
+('X', 1628)
+('T', 1482)
+frequentCharShifts:
+('J', 21)
+('J', 17)
+('J', 8)
+('J', 25)
+('F', 25)
+decryptedWords:
+(21, '')
+(21, 'S')
+(21, 'NYXD')
+(21, 'CRO')
+(21, 'NSCKZZOKBC')
+shiftByIsInDictionary:
+(21, False)
+(21, True)
+(21, False)
+(21, False)
+(21, False)
+(21, True)
+(21, False)
+(21, False)
+(21, False)
+(21, False)
+(21, False)
+(21, False)
+(21, False)
+(21, False)
+(21, True)
+(21, False)
+(21, False)
+(21, False)
+(21, False)
+(21, False)
+countOfShiftByIsInDictionary:
+(5, 1416)
+(17, 80)
+(9, 76)
+(21, 72)
+(23, 72)
+(4, 68)
+(16, 68)
+(1, 68)
+(24, 64)
+(25, 60)
+(20, 60)
+(12, 56)
+(6, 56)
+(11, 56)
+(0, 56)
+(10, 52)
+(15, 52)
+(18, 52)
+(14, 52)
+(19, 48)
+shift=5
+decipher:
+
+                              JORDAN (O.S.)
+                    I DON'T KNOW. SHE WOULDN'T TELL ME.
+
+          BUT BEFORE THE LETTER DISAPPEARS COMPLETELY WE READ ONE MORE
+          LINE: "THE TRUTH IS..."
+
+                                                                         DISSOLVE TO:
+
+
+          EXT. LOUISVILLE CHURCH - FRONT STEPS - LATE AFTERNOON
+
+          DAISY AND TOM, NEWLY MARRIED, POSE FOR PHOTOS.
+
+                              JORDAN (O.S.)
+                    ANYWAYS, THAT DAY, AT FIVE O'CLOCK,
+                    DAISY FAYE MARRIED TOM BUCHANAN
+                    WITH MORE POMP AND CIRCUMSTANCE
+                    THAN LOUISVILLE HAD EVER SEEN...
