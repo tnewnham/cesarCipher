@@ -31,10 +31,12 @@ conf = SparkConf().setMaster("local").setAppName("cesarCipher")
 sc = SparkContext(conf=conf)
 
 
-encryptedFileName = "./Encrypted-1.txt"
-decryptedFileName = "./Decrypted-1.txt"
+# encryptedFileName = "./Encrypted-1.txt"
+# decryptedFileName = "./Decrypted-1.txt"
 # encryptedFileName = "./Encrypted-2.txt"
-# encryptedFileName = "./Encrypted-3.txt"
+# decryptedFileName = "./Decrypted-2.txt"
+encryptedFileName = "./Encrypted-3.txt"
+decryptedFileName = "./Decrypted-3.txt"
 textFile = sc.textFile(encryptedFileName)
 
 lines = textFile.map(lambda line: str(line))
@@ -106,7 +108,7 @@ frequentAlphaChars = (
     )
     # Performance Increase: Limit list by top X chars. This would limit O(n*m) complexity
     # Needs balancing because it skip weird edge case files?
-    # .take(4)
+    # .take(4) but it doesn't work????
 )
 print("frequentAlphaChars:")
 debugTopPrint(frequentAlphaChars, 5)
