@@ -1,4 +1,4 @@
-# Implementation of cesar cipher decryption algorithm
+# Implementation of cesar cipher decryption algorithm 🐈
 
 Uses ROT13 decryption algorithm to decrypt text that has been encrypted using a cesar cipher shift. 
 
